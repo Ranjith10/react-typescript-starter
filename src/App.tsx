@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import TodoInput from './Components/TodoInput';
+import Todo from './Components/Todo';
 
 const App : React.FC = () => {
   	return (
 		<div className="app">
-			<TodoInput 
+			<Todo 
 				title = "Todo App"
 			/>
 		</div>
