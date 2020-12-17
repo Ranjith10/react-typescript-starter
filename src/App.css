@@ -1,0 +1,8 @@
+body, html {
+  margin: 0;
+}
+
+.app {
+  background-color: bisque;
+  height: 100vh;
+}
