@@ -1,5 +1,6 @@
 import React, { useState, useReducer } from 'react'
 import styled from 'styled-components'
+import TodoList from './TodoList'
 
 interface Props {
     title: string
@@ -45,18 +46,23 @@ const TodoInput : React.FC<Props> = ({title}) => {
     }
     console.log({todoList})
     return (
-        <InputContainer className="todo-input-container">
-            <Label>{title}</Label>
-            <Form onSubmit = {handleSubmit}>            
-                <TodoInputElement 
-                    placeholder = 'What needs to be done ?'  
-                    name = 'todoInput'
-                    onChange = {e => setTodoText(e.target.value)}              
-                    type='text'
-                    value = {todoText}
-                />
-            </Form>
-        </InputContainer>
+        <>
+            <InputContainer className="todo-input-container">
+                <Label>{title}</Label>
+                <Form onSubmit = {handleSubmit}>            
+                    <TodoInputElement 
+                        placeholder = 'What needs to be done ?'  
+                        name = 'todoInput'
+                        onChange = {e => setTodoText(e.target.value)}              
+                        type='text'
+                        value = {todoText}
+                    />
+                </Form>
+            </InputContainer>
+            <TodoList 
+                todoList = {todoList}
+            />
+        </>
     )
 }
 
@@ -66,6 +72,7 @@ const Label = styled.label`
     font-size: 22px;
     font-weight: bold;
     margin: 0 0 30px 0;
+    color: #ffffff;
 `
 const InputContainer = styled.div`
     display: flex;
