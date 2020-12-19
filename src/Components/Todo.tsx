@@ -8,7 +8,7 @@ interface Props {
 
 interface TodoItem {
     todo: string,
-    isCompleted: false,
+    isCompleted: boolean,
 }
 
 type State = TodoItem []
@@ -16,19 +16,25 @@ type State = TodoItem []
 type Actions = 
     | {type: 'add-todo', text: string} 
     | {type: 'remove-todo', id: number}
-    | {type: 'complete-todo', id: number}
     | {type: 'clear-completed'}
+    | {type: 'toggle-completed', id:number}
 
 const TodoReducer = (state: State, action: Actions): State => {
     switch (action.type) {
         case 'add-todo' :
             return [...state, {todo: action.text, isCompleted: false}]
         case 'remove-todo' :
-            return state.filter((val, index) => index!== action.id)
-        case 'complete-todo' :
-            return [...state]
+            return state.filter((val, index) => Number(index) !== action.id)
         case 'clear-completed' :
             return [...state]
+        case 'toggle-completed' :
+            let tempState = [...state] 
+            tempState.forEach((val, index) => {
+                if(Number(index) === action.id) {
+                    val['isCompleted'] = !val['isCompleted'] 
+                }
+            }) 
+            return tempState   
         default: 
             return state
     }
@@ -44,7 +50,6 @@ const TodoInput : React.FC<Props> = ({title}) => {
         dispatch({type: 'add-todo', text: todoText})        
         setTodoText('')
     }
-    console.log({todoList})
     return (
         <>
             <InputContainer className="todo-input-container">
@@ -61,6 +66,7 @@ const TodoInput : React.FC<Props> = ({title}) => {
             </InputContainer>
             <TodoList 
                 todoList = {todoList}
+                dispatch = {dispatch}
             />
         </>
     )
