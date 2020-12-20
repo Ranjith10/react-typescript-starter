@@ -44,6 +44,7 @@ const TodoInput : React.FC<Props> = ({title}) => {
 
     const [todoText, setTodoText] = useState<string>('')
     const [todoList, dispatch] = useReducer(TodoReducer, [])
+    const [filter, setFilter] = useState('All')
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -65,8 +66,21 @@ const TodoInput : React.FC<Props> = ({title}) => {
                 </Form>
             </InputContainer>
             <TodoList 
-                todoList = {todoList}
+                todoList = {
+                    filter === 'All' 
+                        ?
+                            todoList
+                        :   filter === 'Active'
+                            ?
+                                todoList.filter(item => !item.isCompleted)
+                            :
+                            todoList.filter(item => item.isCompleted)
+                }
                 dispatch = {dispatch}
+                setFilter = {setFilter}
+                filter = {filter}
+                length = {todoList.length}
+                pendingCount = {todoList.filter(item => !item.isCompleted).length}
             />
         </>
     )

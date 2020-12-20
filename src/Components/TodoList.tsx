@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 type Actions = 
@@ -14,24 +14,32 @@ interface TodoItem {
 
 interface Props {
     todoList: TodoItem [],
-    dispatch: (value : Actions) => void
+    dispatch: (value : Actions) => void,
+    setFilter: (value: string) => void,
+    filter: string,
+    length: number,
+    pendingCount: number,
 }
 
 interface StyleProps {
     completed: boolean,
 }
 
-const TodoList:React.FC<Props> = ({todoList, dispatch}) => {
-    const pendingCount = todoList.filter(todo => !todo.isCompleted).length
+interface TabProps {
+    active: boolean,
+}
+
+const TodoList:React.FC<Props> = ({todoList, dispatch, setFilter, filter, length, pendingCount}) => {
     const itemsText = pendingCount === 1 ? 'Item' : 'Items'
+
     return (
         <TodoListContainer>
             {
-                todoList.length > 0 && todoList.map((item, index) => {
+                length > 0 && todoList.map((item, index) => {
                     return (
                         <TodoElement key={index} completed={item.isCompleted}>
                             <div style={{display: 'flex'}}>
-                                <CheckBox type='Checkbox' checked={item.isCompleted} onClick={() => dispatch({type: 'toggle-completed', id: index})}/>                            
+                                <CheckBox type='Checkbox' checked={item.isCompleted} onChange={() => dispatch({type: 'toggle-completed', id: index})}/>                            
                                 {item.todo}
                             </div>
                             <div style={{cursor: 'pointer'}} onClick={() => dispatch({type: 'remove-todo', id: index})}>&#10006;</div>
@@ -40,9 +48,14 @@ const TodoList:React.FC<Props> = ({todoList, dispatch}) => {
                 })
             }
             {
-                todoList.length > 0 &&
+                length > 0 &&
                 <TodoFooter>
                    {pendingCount} {itemsText} Pending 
+                   <div>
+                       <Tab onClick={() => setFilter('All')} active={filter === 'All'}>All</Tab>
+                       <Tab onClick={() => setFilter('Active')} active={filter === 'Active'}>Active</Tab>
+                       <Tab onClick={() => setFilter('Completed')} active={filter === 'Completed'}>Completed</Tab>
+                   </div>
                    <div style={{cursor: 'pointer'}} onClick={() => dispatch({type: 'clear-completed'})}>Clear Completed</div>
                 </TodoFooter>
             }
@@ -88,4 +101,14 @@ const CheckBox = styled.input`
     height: 25px;
     margin: 0 10px 0 0;
     cursor: pointer;
+`
+const Tab = styled.span<TabProps>`
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    padding: 1px 5px;
+    border: ${props => props.active ? '1px solid gray' : '1px solid #fff' };
+    border-radius: 4px;
+    :hover&{
+        border: 1px solid gray;
+    }
 `
