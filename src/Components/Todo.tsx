@@ -26,7 +26,7 @@ const TodoReducer = (state: State, action: Actions): State => {
         case 'remove-todo' :
             return state.filter((val, index) => Number(index) !== action.id)
         case 'clear-completed' :
-            return [...state]
+            return state.filter((val, index) => !val.isCompleted)
         case 'toggle-completed' :
             let tempState = [...state] 
             tempState.forEach((val, index) => {

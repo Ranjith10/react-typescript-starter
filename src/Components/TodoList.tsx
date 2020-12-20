@@ -43,6 +43,7 @@ const TodoList:React.FC<Props> = ({todoList, dispatch}) => {
                 todoList.length > 0 &&
                 <TodoFooter>
                    {pendingCount} {itemsText} Pending 
+                   <div style={{cursor: 'pointer'}} onClick={() => dispatch({type: 'clear-completed'})}>Clear Completed</div>
                 </TodoFooter>
             }
         </TodoListContainer>
@@ -63,19 +64,22 @@ const TodoListContainer = styled.div`
 const TodoElement = styled.div<StyleProps>`
     display: flex;
     width: calc(100% - 40px);
-    margin: 10px 20px;
+    padding: 10px 20px;
     text-transform: CAPITALIZE;
     font-weight: 600;
     color: ${props => props.completed ? 'gray' : '#000'};
     text-decoration: ${props => props.completed ? 'line-through' : 'none'};
     justify-content: space-between;
+    border-bottom: 1px solid #ededed;
 `
 
 const TodoFooter = styled.div`
     display: flex;
     width: calc(100% - 40px);
-    margin: 10px 20px;
+    padding: 10px 20px;
     text-transform: CAPITALIZE;
+    justify-content: space-between;
+    border-top: 1px solid #ededed;
 `
 
 const CheckBox = styled.input`
